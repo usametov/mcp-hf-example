@@ -10,9 +10,6 @@ declare const Deno: {
   exit(code: number): never;
 };
 
-// run this in bash 
-// export HUGGINGFACE_ACCESS_TOKEN="your_token_here"
-// deno run --allow-env main.ts
 const accessToken = Deno.env.get('HUGGINGFACE_ACCESS_TOKEN');
 if (!accessToken) {
   console.error('HUGGINGFACE_ACCESS_TOKEN environment variable is not set');
