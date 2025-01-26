@@ -1,0 +1,16 @@
+{
+  "name": "mcp-hf-example",
+  "version": "1.0.0",
+  "description": "This is a translation of [HuggingFace MCP example from python to Typescript](https://github.com/philschmid/mcp-openai-gemini-llama-example/blob/master/sqlite_llama_mcp_agent.py)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@huggingface/inference": "^3.1.2",
+    "@modelcontextprotocol/sdk": "^1.4.1"
+  }
+}

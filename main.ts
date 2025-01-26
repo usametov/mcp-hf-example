@@ -1,20 +1,13 @@
-import { HfInference } from '@huggingface/inference'
-import { StdioServerParameters } from "@modelcontextprotocol/sdk/client/stdio.js";
+
+import { HfInference } from '@huggingface/inference';
+import { StdioServerParameters } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { MCPClient } from "./MCPClient";
 
-// Add type declaration for Deno
-declare const Deno: {
-  env: {
-    get(key: string): string | undefined;
-  };
-  exit(code: number): never;
-};
-
-const accessToken = Deno.env.get('HUGGINGFACE_ACCESS_TOKEN');
-if (!accessToken) {
-  console.error('HUGGINGFACE_ACCESS_TOKEN environment variable is not set');
-  Deno.exit(1);
-}
+const accessToken = process.env.HUGGINGFACE_ACCESS_TOKEN;
+   if (!accessToken) {
+       console.error('HUGGINGFACE_ACCESS_TOKEN environment variable is not set');
+       process.exit(1);
+   }
 
 const hf = new HfInference(accessToken);
 const MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct";
