@@ -183,6 +183,4 @@ main().catch(error => {
   process.exit(1);
 });
 
-// read about deno module_metadata
-// https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 

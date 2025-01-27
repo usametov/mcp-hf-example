@@ -3,6 +3,8 @@ This is a translation of [HuggingFace MCP example from python to Typescript](htt
 To run this:
 
 `export HUGGINGFACE_ACCESS_TOKEN="your_token_here"`
-`deno run --allow-env main.ts`
+`npm install`
+`tsc`
+`node dist/main.js`
 
 
