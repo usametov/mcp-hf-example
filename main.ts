@@ -1,19 +1,30 @@
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
-
-import { HfInference } from '@huggingface/inference';
 import { StdioServerParameters } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { MCPClient } from "./MCPClient";
+//import { HuggingFaceProvider } from './HuggingFaceProvider';
+import GroqProvider from './GroqProvider';
 
-const accessToken = process.env.HUGGINGFACE_ACCESS_TOKEN;
+// const accessToken = process.env.HUGGINGFACE_ACCESS_TOKEN;
+//    if (!accessToken) {
+//        console.error('HUGGINGFACE_ACCESS_TOKEN environment variable is not set');
+//        process.exit(1);
+//    }
+
+// example code for HuggingFace client   
+// const hfProvider = new HuggingFaceProvider(accessToken);
+// const MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct";
+// "meta-llama/Llama-3.3-70B-Instruct"; //not free :(
+
+const accessToken = process.env.GROQ_API_KEY;
    if (!accessToken) {
-       console.error('HUGGINGFACE_ACCESS_TOKEN environment variable is not set');
+       console.error('GROQ_API_KEY environment variable is not set');
        process.exit(1);
    }
 
-const hf = new HfInference(accessToken);
-const MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct";
-// "meta-llama/Llama-3.3-70B-Instruct"; //not free :(
+const groqProvider = new GroqProvider(process.env.GROQ_API_KEY!);
+const MODEL_ID = "llama-3.3-70b-versatile";
+
 // System prompt that guides the LLM's behavior and capabilities
 // This helps the model understand its role and available tools
 const SYSTEM_PROMPT = `You are a helpful assistant capable of accessing external functions and engaging in casual chat. Use the responses from these function calls to provide accurate and informative answers. The answers should be natural and hide the fact that you are using tools to access real-time information. Guide the user about available tools and their capabilities. Always utilize tools to access real-time information when required. Engage in a friendly manner to enhance the chat experience.
@@ -29,6 +40,7 @@ const SYSTEM_PROMPT = `You are a helpful assistant capable of accessing external
 - Always highlight the potential of available tools to assist users comprehensively.`;
 
 async function agentLoop(
+  aiProvider: AIProvider,  
   query: string,
   tools: Record<string, any>,
   messages: any[] = []
@@ -49,7 +61,7 @@ async function agentLoop(
   messages.push({ role: "user", content: query });
 
   // Query LLM (replace with actual LLM client implementation)
-  const firstResponse = await hf.chatCompletion({
+  const firstResponse = await aiProvider.chatCompletion({
       model: MODEL_ID,
       messages,
       tools: Object.values(tools).map(t => t.schema),
@@ -79,7 +91,7 @@ async function agentLoop(
       }
 
       // Get final response
-      const newResponse = await hf.chatCompletion({
+      const newResponse = await aiProvider.chatCompletion({
           model: MODEL_ID,
           messages
       });
@@ -167,7 +179,7 @@ async function main() {
               if (!userInput) continue;
 
               // Process the prompt and run agent loop
-              const [response, newMessages] = await agentLoop(userInput, tools, messages);
+              const [response, newMessages] = await agentLoop(groqProvider, userInput, tools, messages);
               console.log("\nResponse:", response);
               messages = newMessages;
           } catch (error) {
