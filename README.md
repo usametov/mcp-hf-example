@@ -3,8 +3,11 @@ This is a translation of [HuggingFace MCP example from python to Typescript](htt
 To run this:
 
 `export HUGGINGFACE_ACCESS_TOKEN="your_token_here"`
+
 `npm install`
+
 `tsc`
+
 `node dist/main.js`
 
 
