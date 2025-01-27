@@ -12,5 +12,8 @@
   "dependencies": {
     "@huggingface/inference": "^3.1.2",
     "@modelcontextprotocol/sdk": "^1.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10"
   }
 }

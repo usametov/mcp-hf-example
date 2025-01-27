@@ -1,3 +1,5 @@
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
 import { HfInference } from '@huggingface/inference';
 import { StdioServerParameters } from '@modelcontextprotocol/sdk/client/stdio.js';
@@ -102,6 +104,10 @@ async function agentLoop(
 
 
 async function main() {
+
+    // Create readline interface
+  const rl = readline.createInterface({ input, output });
+
   // Configure Docker-based MCP server for SQLite
   const serverParams: StdioServerParameters = {
       command: "docker",
@@ -149,8 +155,8 @@ async function main() {
       let messages: any[] | undefined;
       while (true) {
           try {
-              // Get user input and check for exit commands
-              const userInput = prompt("\nEnter your prompt (or 'quit' to exit): ");
+              // Get user input using readline
+              const userInput = await rl.question("\nEnter your prompt (or 'quit' to exit): ");
               if (userInput?.toLowerCase() === "quit" || 
                   userInput?.toLowerCase() === "exit" || 
                   userInput?.toLowerCase() === "q") {
