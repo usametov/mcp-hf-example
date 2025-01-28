@@ -4,6 +4,10 @@ To run this:
 
 `export HUGGINGFACE_ACCESS_TOKEN="your_token_here"`
 
+You can also use Groq:
+
+`export GROQ_API_KEY="your_token_here"`
+
 `npm install`
 
 `tsc`
