@@ -29,10 +29,8 @@ export class MCPClient {
             throw new Error("Not connected to MCP server");
         }
 
-        // Replace with actual tool listing implementation
-        // const tools = await this.client.listTools();
-        // return tools;
-        return [];
+        const tools = await this.client.listTools();
+        return tools;
     }
 
     createToolCaller(toolName: string): (...args: any[]) => Promise<any> {
@@ -41,10 +39,8 @@ export class MCPClient {
         }
 
         return async (...args: any[]) => {
-            // Replace with actual tool calling implementation
-            // const response = await this.client.callTool(toolName, args);
-            // return response;
-            return null;
+             const response = await this.client.callTool(toolName, args);
+             return response;
         };
     }
 }
