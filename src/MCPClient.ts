@@ -30,7 +30,7 @@ export class MCPClient {
         }
 
         const tools = await this.client.listTools();
-        return tools;
+        return tools.tools;
     }
 
     createToolCaller(toolName: string): (...args: any[]) => Promise<any> {
@@ -39,8 +39,18 @@ export class MCPClient {
         }
 
         return async (...args: any[]) => {
-             const response = await this.client.callTool(toolName, args);
-             return response;
+            if (!this.client) {
+                throw new Error("Client not initialized");
+            }
+            
+            // Create the proper parameter structure expected by callTool
+            const params = {
+                name: toolName,
+                arguments: args.length > 0 ? args[0] : {}
+            };
+    
+            const response = await this.client.callTool(params);
+            return response;
         };
     }
 }
