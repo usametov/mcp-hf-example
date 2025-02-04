@@ -70,8 +70,8 @@ async function agentLoop(
   });
 
   const stopReason = firstResponse.choices[0].finish_reason;
-  //TODO: add logs
-  
+  console.log("stop reason:", stopReason);
+
   if (stopReason === "tool_calls") {
 
       const tool_calls = firstResponse?.choices[0]?.message?.tool_calls || [];
