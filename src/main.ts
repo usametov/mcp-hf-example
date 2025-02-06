@@ -124,16 +124,15 @@ async function main() {
   // Configure Docker-based MCP server for SQLite
   const serverParams: StdioServerParameters = {
       command: "docker",
-      args: [
-          "run",
-          "--rm",  // Remove container after exit
-          "-i",    // Interactive mode
-          "-v",    // Mount volume
-          "mcp-test:/mcp",  // Map local volume to container path
-          "mcp/sqlite",     // Use SQLite MCP image
-          "--db-path",
-          "/mcp/test.db"    // Database file path inside container
-      ],
+      args: ["run", 
+        "-i", // Interactive mode
+        "-v",    // Mount volume
+        "mcp-test:/mcp",  // Map local volume to container path       
+        "--rm", // Remove container after exit
+        "--init", 
+        "-e", 
+        "DOCKER_CONTAINER=true", 
+        "mcp/puppeteer"],      
       env: undefined
   };
 
