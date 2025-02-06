@@ -39,6 +39,14 @@ const SYSTEM_PROMPT = `You are a helpful assistant capable of accessing external
 - Maintain an engaging, supportive, and friendly tone throughout the dialogue.
 - Always highlight the potential of available tools to assist users comprehensively.`;
 
+function startsWithFunctionTag(input: string): boolean {
+    // Create a regular expression that matches strings starting with '<function='
+    const pattern = /^<function=/;
+    
+    // Test if the input string matches the pattern
+    return pattern.test(input);
+}
+
 async function agentLoop(
   aiProvider: AIProvider,  
   query: string,
@@ -70,8 +78,10 @@ async function agentLoop(
   });
 
   const stopReason = firstResponse.choices[0].finish_reason;
+  console.log("stop reason:", stopReason);
 
-  if (stopReason === "tool_calls") {
+  if (stopReason === "tool_calls" 
+     || startsWithFunctionTag(firstResponse.choices[0].message.content)) {
 
       const tool_calls = firstResponse?.choices[0]?.message?.tool_calls || [];
       // Process tool calls
